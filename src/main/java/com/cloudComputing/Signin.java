@@ -1,4 +1,4 @@
-package com.shubham;
+package com.cloudComputing;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,20 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @SuppressWarnings("serial")
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/Signin")
+public class Signin extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String first_name=request.getParameter("first_name");
+		String last_name=request.getParameter("last_name");
+		String date_of_birth=request.getParameter("date_of_birth");
+		String password=request.getParameter("password");
+		String number=request.getParameter("number");
 		String employee_id=request.getParameter("employee_id");
-		String pass=request.getParameter("password");
 		Employee newemployee=new Employee();
-		
 		try {
-			String result=newemployee.CheckEmployee(employee_id, pass);
-			System.out.println(result);
-			if(result!="") {
+			if(newemployee.CreateEmployee(employee_id,first_name,last_name,date_of_birth,number,password)) {
 				HttpSession Session=request.getSession();
-				Session.setAttribute("first_name", result);
+				Session.setAttribute("first_name", first_name);
 				response.sendRedirect("home.jsp");
 			}else {
 				response.sendRedirect("login.jsp");
@@ -33,4 +34,5 @@ public class Login extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+
 }
